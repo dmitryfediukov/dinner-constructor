@@ -5,54 +5,71 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class DinnerConstructor {
+    //Хранилище блюд: ключ — тип блюда (например, "Суп"), значение — список названий блюд этого типа
+    HashMap<String, ArrayList<String>> dinnersByType = new HashMap<>();
+    //Класс random поможет сделать произвольные сочетания блюд для комбо набора
+    Random random = new Random();
 
-    HashMap<?, ?> dinnersByType = ??? // хранилище блюд: ключ — тип блюда (например, "Суп"), значение — список названий блюд этого типа
-    Random random = new Random(); //этот вспомогательный класс поможет сделать произвольные сочетания блюд
-
-    //в этом методе мы добавляем компонент в подборку
+    /* Метод добавления блюда. Если указанный тип блюда существует, то добавляем блюдо в него. Если указанного типа блюд
+    нет, то создаем указанный тип и добавляем в него указанное блюдо */
     public void addNewDish(String dishType, String dishName) {
-        ??? dishesForType; //переменая для списка блюд
-        if (dinnersByType.???(dishType)) { //здесь мы должны проверить, содержит ли наше хранилище такое блюдо
-            dishesForType = ??//если мы уже работали с этим типом - используем существующий список
+        //Переменная для списка блюд
+        ArrayList<String> dishesForType;
+        //Проверяем наличие полученного типа блюд
+        if (dinnersByType.containsKey(dishType)) {
+            dishesForType = dinnersByType.get(dishType);
         } else {
-            dishesForType = //для нового типа блюд создаём пустой список компонентов.
-            dinnersByType.???(dishType, dishesForType); //запоминаем новый список в хранилище
+            dishesForType = new ArrayList<>();
+            dinnersByType.put(dishType, dishesForType);
         }
 
-        dishesForType.???(dishName); //независимо от того, новый это список или существующий - добавим в него конкретное блюдо
+        dishesForType.add(dishName);
     }
 
-    //метод для генерирования вариантов комбинации блюд
+    //Метод для генерирования вариантов комбинации блюд. Метод возвращает список комбо наборов.
     public ArrayList<ArrayList<String>> generateCombos(int comboNumber, ArrayList<String> dishTypes) {
-        ??? combos = ??? //пустой список для хранения получившихся комбинаций блюд
-        for (???; i <= comboNumber; ???) {
-            ??? combo = generateCombo(dishTypes); //одна комбинация блюд генерируется в отдельном методе
+        //Пустой список для хранения получившихся комбинаций блюд
+        ArrayList<ArrayList<String>> combos = new ArrayList<>();
+        for (int i = 1; i <= comboNumber; i++) {
+            /* В цикле вызываем метод generateCombo для генерации одного комбо набора со случайными позициями переданных
+            типов блюд */
+            ArrayList<String> combo = generateCombo(dishTypes);
             combos.add(combo);
         }
         return combos;
     }
 
 
-    //метод для проверки дубликатов блюд
+    //Метод для проверки наличия типа блюда
     public boolean checkType(String type) {
-        return dinnersByType.???(type); //если хранилище уже содержит такое блюдо - вернём true
+        //Если хранилище уже содержит такой тип блюд - вернём true
+        return dinnersByType.containsKey(type);
     }
 
-    //метод для генерирования одной комбинации блюд
-    private ??? ***(??? dishTypes) {
-        ??? selectedDishes = ???;
-        for (??? dishType: dishTypes) {
-            ??? availableDishes = dinnersByType.???(dishType); //достаём из хранилища варианты блюд по типу
-            String selectedDish = ???(availableDishes); //полцчим произвольное блюдо
-            selectedDishes.???(selectedDish); //добавим блюдо в подборку комбинацию
+    //Метод для генерирования одной комбинации блюд
+    private ArrayList<String> generateCombo(ArrayList<String> dishTypes) {
+        ArrayList<String> selectedDishes = new ArrayList<>();
+        for (String dishType: dishTypes) {
+            //Достаём из хранилища варианты блюд по типу
+            ArrayList<String> availableDishes = dinnersByType.get(dishType);
+            //Вызываем метод getRandomDish для получения случайного блюда из получившегося списка блюд необходимого типа
+            String selectedDish = getRandomDish(availableDishes);
+            //Добавляем блюдо в комбо набор
+            selectedDishes.add(selectedDish);
         }
         return selectedDishes;
     }
 
-    private String getRandomDish(??? availableDishes) {
-        int numberOfDishesForType = availableDishes.size(); //получаем общее количество доступных блюд этого типа
-        int dishIndex = random.nextInt(numberOfDishesForType); //генерируем случайное число от 0 до (кол-во блюд - 1), чтобы выбрать случайное блюдо
-        String selectedDish = availableDishes.???(dishIndex); //выберем произвольное блюдо по индексу
+    //Метод получения случайного блюда из списка полученных блюд
+    private String getRandomDish(ArrayList<String> availableDishes) {
+        //Получаем общее количество переданных блюд
+        int numberOfDishesForType = availableDishes.size();
+        //Генерируем случайное число от 0 до (кол-во блюд - 1), чтобы выбрать случайное блюдо
+        int dishIndex = random.nextInt(numberOfDishesForType);
+        //Выбираем произвольное блюдо по индексу
+        String selectedDish = availableDishes.get(dishIndex);
+
+        return selectedDish;
     }
 
 }
