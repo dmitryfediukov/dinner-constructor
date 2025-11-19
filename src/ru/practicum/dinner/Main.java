@@ -47,9 +47,9 @@ public class Main {
         String result = dc.addNewDish(dishType, dishName);
         if (result.equals("success")) {
             System.out.println("Блюдо " + dishName + " добавлено в раздел " + dishType + "!");
-        } else {
-            System.out.println("Блюдо " + dishName + " уже есть в разделе " + dishType +". Попробуйте добавить " +
-                    "другое блюдо.");
+        } else if (result.equals("dishAlreadyAdded")) {
+            System.out.println("В разделе " + dishType + " уже есть блюдо " + dishName +". Попробуйте добавить " +
+                    "другое блюдо в данный раздел, либо попробуйте добавить в другой раздел данное блюдо.");
         }
     }
 
