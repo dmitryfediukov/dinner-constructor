@@ -17,14 +17,12 @@ public class Main {
             String command = scanner.nextLine();
 
             switch (command) {
-                case "1":
-                    addNewDish();
-                    break;
-                case "2":
-                    generateDishCombo();
-                    break;
-                case "3":
+                case "1" -> addNewDish();
+                case "2" -> generateDishCombo();
+                case "3" -> {
                     return;
+                }
+                default -> System.out.println("Неизвестная команда");
             }
         }
     }
@@ -45,7 +43,14 @@ public class Main {
         System.out.println("Введите название блюда:");
         String dishName = scanner.nextLine();
 
-        dc.addNewDish(dishType, dishName);// добавьте новое блюдо, с помощью метода DinnerConstructor addNewDish
+        // добавьте новое блюдо, с помощью метода DinnerConstructor addNewDish
+        String result = dc.addNewDish(dishType, dishName);
+        if (result.equals("success")) {
+            System.out.println("Блюдо " + dishName + " добавлено в раздел " + dishType + "!");
+        } else {
+            System.out.println("Блюдо " + dishName + " уже есть в разделе " + dishType +". Попробуйте добавить " +
+                    "другое блюдо.");
+        }
     }
 
     /* Метод генерации комбо блюд.

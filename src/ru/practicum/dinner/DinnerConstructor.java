@@ -12,18 +12,25 @@ public class DinnerConstructor {
 
     /* Метод добавления блюда. Если указанный тип блюда существует, то добавляем блюдо в него. Если указанного типа блюд
     нет, то создаем указанный тип и добавляем в него указанное блюдо */
-    public void addNewDish(String dishType, String dishName) {
+    public String addNewDish(String dishType, String dishName) {
         //Переменная для списка блюд
-        ArrayList<String> dishesForType;
+        ArrayList<String> dishesForType = new ArrayList<>();
+        String result;
         //Проверяем наличие полученного типа блюд
         if (dinnersByType.containsKey(dishType)) {
             dishesForType = dinnersByType.get(dishType);
         } else {
-            dishesForType = new ArrayList<>();
             dinnersByType.put(dishType, dishesForType);
         }
 
-        dishesForType.add(dishName);
+        if (!dishesForType.contains(dishName)) {
+            dishesForType.add(dishName);
+            result = "success";
+        } else {
+            result = "dishAlreadyAdded";
+        }
+
+        return result;
     }
 
     //Метод для генерирования вариантов комбинации блюд. Метод возвращает список комбо наборов.
@@ -38,7 +45,6 @@ public class DinnerConstructor {
         }
         return combos;
     }
-
 
     //Метод для проверки наличия типа блюда
     public boolean checkType(String type) {
